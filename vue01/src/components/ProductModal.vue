@@ -2,20 +2,35 @@
 import { ref, onMounted } from "vue";
 import bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 
-const props=defineProps(["a","b","c","d","e"])
+const props = defineProps({
+  product: {
+    type: Object,
+    default: () => ({})
+  }
+});
 
+const emit = defineEmits(['addToCart']);
 
 const exampleRef = ref(null);
 const exampleObj = ref(null);
-onMounted(function () {
+
+onMounted(() => {
   exampleObj.value = new bootstrap.Modal(exampleRef.value);
 });
+
 function showModal() {
   exampleObj.value.show();
 }
+
 function hideModal() {
   exampleObj.value.hide();
 }
+
+function addToCart() {
+  emit('addToCart', props.product);
+  hideModal();
+}
+
 defineExpose({
   showModal,
   hideModal,
@@ -26,38 +41,26 @@ defineExpose({
   <div
     ref="exampleRef"
     class="modal fade"
-    id="exampleModal"
+    id="productModal"
     tabindex="-1"
-    aria-labelledby="exampleModalLabel"
+    aria-labelledby="productModalLabel"
     aria-hidden="true"
   >
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-          <button
-            type="button"
-            class="btn-close"
-            data-bs-dismiss="modal"
-            aria-label="Close"
-          ></button>
+          <h5 class="modal-title" id="productModalLabel">{{ product.name }}</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-          <p>Woo-hoo, you're reading this text in a modal!</p>
+          <p>Price: ${{ product.price }}</p>
+          <p>{{ product.description }}</p>
         </div>
         <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" @click="addToCart">Add to Cart</button>
         </div>
       </div>
     </div>
   </div>
 </template>
-
-<style></style>

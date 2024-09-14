@@ -5,6 +5,7 @@
         <RouterLink :to="{name: 'dir2-comp2-link', params: { xyz: '123456'} }">Comp2</RouterLink>｜
         <RouterLink to="/dir1/comp3">Comp3</RouterLink>｜
         <RouterLink to="/dir1/comp4">Comp4</RouterLink>｜
+        <RouterLink to="/dir1/cart-container">Cart Container</RouterLink>｜
     </div>
     <div>
         <RouterView></RouterView>
